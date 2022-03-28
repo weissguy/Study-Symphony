@@ -1,0 +1,132 @@
+body {
+    display: block;
+    height: 170px;
+    width: 240px;
+    background-size: 240px;
+}
+
+body.blue {
+    background-color: #b8e5f9;
+}
+
+body.green {
+    background-color: #aeffd8;
+}
+
+body.pink {
+    background-color: #efc2ff;
+}
+
+body.red {
+    background-color: #f7a3a3;
+}
+
+body.star {
+    background-image: url("/images/star.jpg");
+}
+
+body.bench {
+    background-image: url("/images/bench.jpg");
+    background-size: 147%;
+}
+
+body.clean {
+    background-image: url("/images/clean.png");
+    background-size: 140%;
+}
+
+body.academia {
+    background-image: url("/images/academia.jpg");
+}
+
+#main {
+    background-color: white;
+    height: 150px;
+    width: 220px;
+    display: block;
+    border-radius: 5px;
+    margin: 0 auto;
+}
+
+#mini {
+    background-color: white;
+    height: 70px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 5px;
+}
+
+#title {
+    text-align:center;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+    padding-top: 5px;
+}
+
+#song_info {
+    height: 20px;
+    width: 200px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 100;
+    text-align: center;
+    margin: 0 auto;
+    padding-top: 7px;
+}
+
+.playpausemini {
+    width: 0;
+    height: 37px;
+    border: 0;
+    background: transparent;
+    box-sizing: border-box;
+    border-color: transparent transparent transparent #202020;
+    transition: 150ms all ease;
+    cursor: pointer;
+    border-style: solid;
+    border-width: 19px 0 19px 34px;
+    text-align: center;
+    margin: auto;
+    margin-top: 35px;
+    margin-left: 95px;
+}
+.playpausemini.paused {
+    box-sizing: border-box;
+    height: 38px;
+    border-width: 19px 0 19px 34px;
+}
+.playpausemini.playing {
+    border-style: double;
+    border-width: 0px 0 0px 34px;
+}
+.playpausemini:hover, .playpausemini:focus {
+    border-color: transparent transparent transparent #404040;
+}
+
+#nextminibutton {
+    font-size: 43px;
+    position: fixed;
+    margin-left: 3px;
+    color: #202020;
+    background-color: transparent;
+    border-width: 0px;
+    border: none;
+    outline: none;
+    padding-top: 26px;
+}
+
+#backminibutton {
+    font-size: 43px;
+    position: fixed;
+    right: 150px;
+    color: #202020;
+    background-color: transparent;
+    border-width: 0px;
+    border: none;
+    outline: none;
+    padding-top: 26px;
+}
+
+.glyphicon:hover, .glyphicon:focus {
+    color: #404040;
+}

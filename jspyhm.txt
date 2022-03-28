@@ -1,0 +1,76 @@
+
+1. post data to chrome.storage.sync
+2. figure out how to separate data into artist, genre, length
+3. change message on options page to be unique for first open (using already implemented function)
+4. compile data / find web api
+5. web scrape + youtube search
+
+
+
+Session Storage stores:
+    - list of all video ids to be played in current session, w/ data
+    - start time of current session
+
+Chrome Sync Storage stores:
+    - user genre preferences
+    - user artist preferences
+    - user song reviews (taken from session storage periodically)
+    - user background preference
+
+
+
+for web scraping / machine learning
+
+1. javascript
+
+	pros:
+	- easy to run in browser
+	- no need for external server / translator
+
+	cons:
+	- less familiarity
+	- fewer machine learning libraries
+	- need to figure out how to import modules
+
+
+2. python
+
+	pros:
+	- more familiarity
+	- more machine learning libraries
+
+	cons:
+	- hard to run in browser
+	- need external server / translator
+
+
+option 1: use javascript and learn how to import modules *best*
+option 2: use python and set up aws server (if works w/ extension)
+option 3: use python and set up translator (brython?)
+
+
+
+* consideration with youtube video code generation: must web scrape for copyrighted music; if present, must find other video
+
+
+
+popup.js
+	- content script
+	- runs 1x when popup opened
+	- opens video.html if not already opened, controls play/pause features for video, syncs play/pause buttons
+	- input: video.js (playpause sync)
+	- output: video.js (player state, playpause sync)
+
+video.js
+	- content script
+	- runs whenever video.html opened/refreshed
+	- plays video, queues next videos, allows play/pause/next features
+	- input: sessionStorage (ids, id, idNumber), popup.js (playpause sync)
+	- output: popup.js (player state, playpause sync)
+
+scrape.js
+	- service worker
+	- runs 1x in background
+	- scrapes web for video ids, keeps and posts updated ids, id, idNumber to sessionStorage
+	- input: AI
+	- output: sessionStorage (ids, id, idNumber)

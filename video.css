@@ -1,0 +1,130 @@
+body {
+    display: block;
+    background-size: 100vw;
+}
+
+body.blue {
+    background-color: #b8e5f9;
+}
+
+body.green {
+    background-color: #aeffd8;
+}
+
+body.pink {
+    background-color: #efc2ff;
+}
+
+body.red {
+    background-color: #f7a3a3;
+}
+
+body.star {
+    background-image: url("/images/star.jpg");
+}
+
+body.bench {
+    background-image: url("/images/bench.jpg");
+}
+
+body.clean {
+    background-image: url("/images/clean.png");
+    background-size: 87%;
+    background-position-x: 100px;
+}
+
+body.academia {
+    background-size: 75vw;
+    background-image: url("/images/academia.jpg");
+}
+
+iframe {
+    width: 480px;
+    height: 270px;
+    margin: 0 auto;
+    margin-top: 25px;
+    display: block;
+    border: 5px solid darkgray;
+    /*border-image: radial-gradient(ellipse at center, rgb(128, 128, 128), white);*/
+    border-image-slice: 1;
+    border-image-width: 5px;
+    border-radius: 5px;
+    pointer-events: none;
+}
+
+h1 {
+    text-align: center;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    font-size: 50px;
+    font-weight: bold;
+    width: 440px;
+    margin: 0 auto;
+    padding-top: 15px;
+}
+
+.main {
+    height: 500px;
+    width: 50%;
+    background-color: white;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 30px;
+    border-radius: 15px;
+}
+
+.playpause {
+    border: 0;
+    background: transparent;
+    box-sizing: border-box;
+    width: 0;
+    height: 74px;
+    border-color: transparent transparent transparent #202020;
+    transition: 150ms all ease;
+    cursor: pointer;
+    border-style: solid;
+    border-width: 37px 0 37px 60px;
+    text-align: center;
+    margin: auto;
+    margin-top: 30px;
+    padding-right: 1px;
+    margin-left: 8px;
+}
+.playpause.paused {
+    box-sizing: border-box;
+    height: 74px;
+    border-width: 37px 0 37px 60px;
+}
+.playpause.playing {
+    border-style: double;
+    border-width: 0px 0 0px 60px;
+}
+.playpause:hover, .playpause:focus {
+    border-color: transparent transparent transparent #404040;
+}
+
+#nextbutton {
+    font-size: 88px;
+    position: fixed;
+    bottom: 205px;
+    right: 510px;
+    color: #202020;
+    background-color: transparent;
+    border-width: 0px;
+    outline: none;
+}
+
+#backbutton {
+    font-size: 88px;
+    position: fixed;
+    bottom: 205px;
+    left: 510px;
+    color: #202020;
+    background-color: transparent;
+    border-width: 0px;
+    outline: none;
+}
+
+.glyphicon:hover, .playpause:focus {
+    color: #404040;
+}
