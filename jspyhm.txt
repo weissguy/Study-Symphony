@@ -2,8 +2,9 @@
 1. post data to chrome.storage.sync
 2. figure out how to separate data into artist, genre, length
 3. change message on options page to be unique for first open (using already implemented function)
-4. compile data / find web api
-5. web scrape + youtube search
+4. don't let formatting affect all tabs
+5. compile data / find web api
+6. web scrape + youtube search
 
 
 

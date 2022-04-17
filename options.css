@@ -85,12 +85,12 @@ button.likes {
     background-image: url("/images/jazz.jpg");
 }
 
-#bossanova.nope:hover {
-    background-image: url("/images/bossanovablur.jpg");
+#indie.nope:hover {
+    background-image: url("/images/indieblur.jpg");
 }
 
-#bossanova.likes {
-    background-image: url("/images/bossanova.jpg");
+#indie.likes {
+    background-image: url("/images/indie.jpg");
 }
 
 #chill.nope:hover {

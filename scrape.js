@@ -72,7 +72,7 @@ function addIds(newIds) { // newInfo should look like {title, id, artist, genre,
 // when the extension is first installed,
 chrome.runtime.onInstalled.addListener(function(object) {
 
-    if (chrome.runtime.onInstalledReason === "install") {
+    // if (chrome.runtime.onInstalledReason === "install") { FIXME remove comments for intended final functionality
 
         chrome.runtime.openOptionsPage(); // open the options page
 
@@ -81,16 +81,8 @@ chrome.runtime.onInstalled.addListener(function(object) {
         chrome.storage.sync.set({ "background" : "blue" }); // initialize background variable to default blue, post to chrome.storage.sync
         chrome.storage.sync.set({ "productivities" : Array(10).fill([0, 0])});
 
-    } else if (chrome.runtime.onInstalledReason === "update") {
-        chrome.runtime.openOptionsPage();
-    }
+    // } else if (chrome.runtime.onInstalledReason === "update") {
+        // chrome.runtime.openOptionsPage();
+    // }
 
-});
-
-
-// FIXME because chrome.storage.sync calls are asynchronous functions, there is no guarantee they will finish before the code stops running
-// when the session is closed,
-chrome.runtime.onSuspend(function(object) {
-    // post session storage values to chrome.storage.sync
-    chrome.tabs.sendMessage(html_id, {action: "post_values_to_chrome_sync_storage"});
 });

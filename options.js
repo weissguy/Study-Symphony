@@ -18,7 +18,7 @@ function initGenres() {
 
         genres = result.genres;
         console.log("genres: " + genres);
-        
+
         for (let i = 0; i < genreButtons.length; i++) {
 
             let genreButton = genreButtons[i];
@@ -29,7 +29,6 @@ function initGenres() {
             } else {
                 genreButton.classList.toggle("nope");
             }
-    
         }
 
         changeGenres();

@@ -54,9 +54,6 @@ chrome.runtime.onMessage.addListener(
             var currentProductivities = JSON.parse(window.sessionStorage.getItem("productivities"));
             currentProductivities.push([request.time, request.productivity]);
             window.sessionStorage.setItem("productivities", JSON.stringify(currentProductivities));
-        } else if (request.action === "post_values_to_chrome_sync_storage") {
-            // post to chrome.storage.sync
-            // FIXME this will probably overwrite any existing values in chrome.storage.sync
         }
         return true;
     }
