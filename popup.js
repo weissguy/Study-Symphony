@@ -80,13 +80,9 @@ function addUserInput() {
 
     chrome.tabs.sendMessage(html_id, {action: "get_video_info"}, function(response) {
 
-        var idNumber = response.idNumber;
+        if ((response.user_review !== -1 || response.confidence >= 0.5) && (response.productivity !== -1)) return; // if no data needs to be collected, return
 
-        var currentTime = new Date().getTime();
-        if (lastProductivityTime === undefined) lastProductivityTime = response.sessionStartTime;
-        alert("time since last producitivity question: " + (currentTime-lastProductivityTime));
-        elapsedTime = currentTime-lastProductivityTime;
-        if ((response.confidence >= 0.5 || response.user_review !== -1) && (elapsedTime < 60000)) return;
+        var idNumber = response.idNumber;
 
         // increase popup height
         document.body.style.height = "240px";
@@ -117,11 +113,11 @@ function addUserInput() {
         inputSubmit.style.cssText = "margin-left: 100px";
         inputDiv.appendChild(inputSubmit);
 
-        if ((response.confidence < 0.5) && (response.user_review === -1)) { // if song confidence is low and user hasn't answered yet,
+        if (response.confidence < 0.5 && response.user_review === -1) { // if song confidence is low and user hasn't answered yet,
 
-            inputLabel.innerHTML = "On a scale from 1-10, how much you do like this song?";
+            inputLabel.innerHTML = "On a scale from 1-10, how would you rate this <i>song<i>?";
             inputDiv.insertBefore(inputLabel, inputDiv.getElementsByTagName("input")[0]);
-
+        
             inputSubmit.addEventListener("click", () => {
                 // if input is blank, return
                 if (inputInput.value === "" || inputInput.value === "0") return;
@@ -138,16 +134,17 @@ function addUserInput() {
                 document.body.style.transition = "height 1s";
             });
 
-        } else { // if (user hasn't answered productivity in past 10 minutes)
-            inputLabel.innerHTML = "On a scale from 1-10, how would you rate your current productivity?";
-            inputDiv.insertBefore(inputLabel, inputDiv.getElementsByTagName("input")[0]);
+        } else if (response.productivity === -1) { // if user hasn't answered productivity during this song yet
 
+            inputLabel.innerHTML = "On a scale from 1-10, how would you rate your current <i>productivity<i>?";
+            inputDiv.insertBefore(inputLabel, inputDiv.getElementsByTagName("input")[0]);
+        
             // update current productivity variable in chrome.storage.sync
             inputSubmit.addEventListener("click", () => {
                 // if input is blank, return
                 if (inputInput.value === "" || inputInput.value === "0") return;
                 // update user review variable for song in session storage
-                chrome.tabs.sendMessage(html_id, {action: "add_productivity", time: currentTime, productivity: parseInt(inputInput.value)});
+                chrome.tabs.sendMessage(html_id, {action: "add_productivity", idNumber: idNumber, productivity: inputInput.value});
                 // fade away div to show that input has been received
                 inputDiv.style.height = "0px";
                 inputDiv.style.opacity = "0";
@@ -159,13 +156,11 @@ function addUserInput() {
                 document.body.style.transition = "height 1s";
             });
 
-            lastProductivityTime = new Date().getTime();
-            elapsedTime = currentTime-lastProductivityTime;
-
         }
 
     });
 }
+
 
 function openHTML() {
     window.open("video.html", "_blank");

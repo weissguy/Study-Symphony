@@ -43,7 +43,7 @@ chrome.runtime.onMessage.addListener(
         } else if (request.action === "back_video") {
             back();
         } else if (request.action === "get_video_info") {
-            sendResponse({title: ids[idNumber]["title"], artist: ids[idNumber]["artist"], confidence: ids[idNumber]["confidence"], user_review: ids[idNumber]["user_review"], idNumber: idNumber, sessionStartTime: startTime});
+            sendResponse({title: ids[idNumber]["title"], artist: ids[idNumber]["artist"], confidence: ids[idNumber]["confidence"], user_review: ids[idNumber]["user_review"], idNumber: idNumber, productivity: ids[idNumber]["productivity"]});
         } else if (request.action === "update_user_review") {
             // update user review per individual song with value from popup.js
             ids[request.idNumber]["user_review"] = parseInt(request.user_review);
@@ -51,10 +51,9 @@ chrome.runtime.onMessage.addListener(
             // communicate w/ scrape.js that ids has been modified
             chrome.runtime.sendMessage({greeting: "ids_updated", new_ids: ids});
         } else if (request.action === "add_productivity") {
-            // update productivities with value from popup.js
-            var currentProductivities = JSON.parse(window.sessionStorage.getItem("productivities"));
-            currentProductivities.push([request.time, request.productivity]);
-            window.sessionStorage.setItem("productivities", JSON.stringify(currentProductivities));
+            // update productivity per individual song with value from popup.js
+            ids[request.idNumber]["productivity"] = parseInt(request.productivity);
+            window.sessionStorage.setItem("ids", JSON.stringify(ids));
             // communicate w/ scrape.js that ids has been modified
             chrome.runtime.sendMessage({greeting: "ids_updated", new_ids: ids});
         }
@@ -70,9 +69,6 @@ function onYouTubePlayerAPIReady() {
         window.sessionStorage.setItem("ids", JSON.stringify(ids));
         window.sessionStorage.setItem("id#", idNumber);
         window.sessionStorage.setItem("id", id);
-    } if (window.sessionStorage.getItem("productivities") === null) {
-        // initializes productivies as an empty array
-        window.sessionStorage.setItem("productivities", JSON.stringify([[0, 0]])); // format [[elapsedTime, productivityIndex]]
     }
 
     // creates YT player object
@@ -192,14 +188,16 @@ function playpause() {
 }
 
 function next() {
-    // add some counter to keep track of which genre, artist, song length, etc. was skipped
-    ids[idNumber]["skipped"] = true;
 
     // if there was a change in ids, update in session storage
     postUpdatedIds();
 
     // add end time
     ids[idNumber]["end_time"] = new Date().getTime();
+
+    // update ids to reflect that video was skipped
+    if (player.getDuration() - player.getCurrentTime() < 30) return;
+    ids[idNumber]["skipped"] = true;
 
     // get new correct video id
     if (idNumber < ids.length-1) idNumber++;
@@ -231,6 +229,9 @@ function back() {
 
     // if there was a change in ids, update in session storage
     postUpdatedIds();
+
+    // if user immediately goes back to previous video, assume skipping was a mistake, and correct the skipped value
+    if (player.getCurrentTime() < 5 && ids[idNumber-1]["skipped"]) ids[idNumber-1]["skipped"] = false;
 
     // get new correct video id (from scrape.js)
     if (idNumber >= 1) idNumber--;

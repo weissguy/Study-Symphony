@@ -1,7 +1,5 @@
 
 1. end of session -> store session data to csv files
-    a) incorporate productivity rating in ids variable
-    b) always ask productivity if not asking song rating
 2. figure out how to separate data into artist, genre, length
     a) create variables to sum #skips per artist, genre, length
     b) create variables to average productivity rating per artist, genre, length
