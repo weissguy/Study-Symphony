@@ -48,12 +48,15 @@ chrome.runtime.onMessage.addListener(
             // update user review per individual song with value from popup.js
             ids[request.idNumber]["user_review"] = parseInt(request.user_review);
             window.sessionStorage.setItem("ids", JSON.stringify(ids));
-            // FIXME should probably add something in to communicate w/ scrape.js that ids has been modified
+            // communicate w/ scrape.js that ids has been modified
+            chrome.runtime.sendMessage({greeting: "ids_updated", new_ids: ids});
         } else if (request.action === "add_productivity") {
             // update productivities with value from popup.js
             var currentProductivities = JSON.parse(window.sessionStorage.getItem("productivities"));
             currentProductivities.push([request.time, request.productivity]);
             window.sessionStorage.setItem("productivities", JSON.stringify(currentProductivities));
+            // communicate w/ scrape.js that ids has been modified
+            chrome.runtime.sendMessage({greeting: "ids_updated", new_ids: ids});
         }
         return true;
     }
@@ -250,3 +253,7 @@ function back() {
     console.log("back! id: " + id);
 
 }
+
+
+// FIXME when session closed, post session data to csv file 
+chrome.runtime.onSuspend.addListener() // FIXME check to make sure this completes asynchronously before session ends

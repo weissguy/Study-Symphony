@@ -142,3 +142,16 @@ function changeBackgrounds() {
         })
     }
 }
+
+chrome.runtime.sendMessage({action: "add_first_time_message?"}, 
+    function(response) {
+        if (response) {
+            addFirstTimeMessage();
+        }
+    }
+)
+
+function addFirstTimeMessage() {
+    var endText = document.getElementById("end_text");
+    endText.innerHTML = "You're all set up and good to go! If you ever want to make changes to your settings, you can come back to this page. Get started with listening <a href=\"video.html\" target=\"_blank\" rel=\"noreferrer noopener\">here<a>.";
+}

@@ -32,6 +32,8 @@ axios.get('https://scrapeme.live/shop/').then(({ data }) => {
 
 
 
+// boolean, set to true if this is first time installing extension, used to customize options page message
+var first_time = false;
 
 // contains running list of all video ids to be played in current tab listening session
 var ids = [
@@ -53,6 +55,7 @@ var idNumber = 0;
 var id = ids[idNumber]["id"];
 
 
+
 // addIds("21Ki96Lsxhc");
 
 function addIds(newIds) { // newInfo should look like {title, id, artist, genre, length}
@@ -68,6 +71,15 @@ function addIds(newIds) { // newInfo should look like {title, id, artist, genre,
 }
 
 
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.greeting === "ids_updated") {
+        ids = request.new_ids;
+    } else if (request.action === "add_first_time_message?" && first_time) {
+        sendResponse(true);
+        first_time = false;
+    }
+});
+
 
 // when the extension is first installed,
 chrome.runtime.onInstalled.addListener(function(object) {
@@ -79,7 +91,10 @@ chrome.runtime.onInstalled.addListener(function(object) {
         chrome.storage.sync.set({ "genres" : Array(12).fill(false) }); // initialize genres variable, post to chrome.storage.sync
         chrome.storage.sync.set({ "artists" : Array(5).fill("") }); // initialize artists variable, post to chrome.storage.sync
         chrome.storage.sync.set({ "background" : "blue" }); // initialize background variable to default blue, post to chrome.storage.sync
-        chrome.storage.sync.set({ "productivities" : Array(10).fill([0, 0])});
+
+        first_time = true;
+        
+        chrome.storage.sync.set({ "productivities" : Array(10).fill([0, 0])}); // FIXME DELETE THIS LINE, PRODUCTIVITIES INCORPORATED
 
     // } else if (chrome.runtime.onInstalledReason === "update") {
         // chrome.runtime.openOptionsPage();
