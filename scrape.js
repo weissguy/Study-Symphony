@@ -42,7 +42,7 @@ var ids = [
 	{"title": "Christmas Time is Here", "id": "DxF1rl3Bpms", "artist": "Charles Cornell", "genre": "jazz", "length": "5:23", "confidence": 0.7, "user_review": -1, "productivity": -1, "start_time": 0, "end_time": 0, "skipped": false},
 	{"title": "Shortest Math Video", "id": "ALGJtSWToiM", "artist": "Canned Maths", "genre": "?", "length": "0:04", "confidence": 0.7, "user_review": -1, "productivity": -1, "start_time": 0, "end_time": 0, "skipped": false},
 	{"title": "Lucy", "id": "z17vPBJzlG0", "artist": "Bluecoats", "genre": "DCI", "length": "13:33", "confidence": 0.7, "user_review": -1, "productivity": -1, "start_time": 0, "end_time": 0, "skipped": false},
-	{"title": "Epic Boss Music", "id": "SuVYiUqz7XI", "artist": "Domi, Louis Cole", "genre": "funk", "length": "3:25", "confidence": 0.7, "user_review": -1, "productivity": -1, "start_time": 0, "end_time": 0, "skipped": false}
+	{"title": "Epic Boss Music", "id": "SuVYiUqz7XI", "artist": "Domi & Louis Cole", "genre": "funk", "length": "3:25", "confidence": 0.7, "user_review": -1, "productivity": -1, "start_time": 0, "end_time": 0, "skipped": false}
 ];
 
 // scrape.js changes to true when it adds new ids, video.js changes to false when it updates ids in session storage
@@ -71,8 +71,9 @@ function addIds(newIds) { // newInfo should look like {title, id, artist, genre,
 }
 
 
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.greeting === "ids_updated") {
+    if (request.action === "ids_updated") {
         ids = request.new_ids;
     } else if (request.action === "add_first_time_message?" && first_time) {
         sendResponse(true);

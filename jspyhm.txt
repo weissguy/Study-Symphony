@@ -1,11 +1,10 @@
 
-1. end of session -> store session data to csv files
+1. periodically store session data to csv files--either a) every x seconds or b) every time a change is made
 2. figure out how to separate data into artist, genre, length
     a) create variables to sum #skips per artist, genre, length
     b) create variables to average productivity rating per artist, genre, length
-3. don't let formatting affect all tabs
-4. compile data / find web api
-5. web scrape + youtube search
+3. compile data / find web api
+4. web scrape + youtube search
 
 
 
@@ -21,34 +20,36 @@ Chrome Sync Storage stores:
 
 
 
-for web scraping / machine learning
+for web scraping / machine learning:
 
-1. javascript
+    1. javascript
 
-	pros:
-	- easy to run in browser
-	- no need for external server / translator
+        pros:
+        - easy to run in browser
+        - no need for external server / translator
 
-	cons:
-	- less familiarity
-	- fewer machine learning libraries
-	- need to figure out how to import modules
-
-
-2. python
-
-	pros:
-	- more familiarity
-	- more machine learning libraries
-
-	cons:
-	- hard to run in browser
-	- need external server / translator
+        cons:
+        - less familiarity
+        - fewer machine learning libraries
+        - need to figure out how to import modules
 
 
 option 1: use javascript and learn how to import modules *best*
-option 2: use python and set up aws server (if works w/ extension)
-option 3: use python and set up translator (brython?)
+
+
+
+for csv export:
+
+    1. update data frequently
+
+        pros:
+        - can constantly use csv data to inform algorithm decisions (necessary)
+
+        cons:
+        - difficult to not overwrite data
+        - where to put function call? (periodic vs after any change made)
+        - difficult to organize (solution: organize every session has its own csv file, save w/ session # and date -- create variable to store session #)
+
 
 
 
@@ -73,6 +74,6 @@ video.js
 scrape.js
 	- service worker
 	- runs 1x in background
-	- scrapes web for video ids, keeps and posts updated ids, id, idNumber to sessionStorage
+	- scrapes web for video ids, keeps and posts updated ids, id, idNumber to sessionStorage ***AND THE CSV***
 	- input: AI
 	- output: sessionStorage (ids, id, idNumber)

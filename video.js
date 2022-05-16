@@ -49,13 +49,13 @@ chrome.runtime.onMessage.addListener(
             ids[request.idNumber]["user_review"] = parseInt(request.user_review);
             window.sessionStorage.setItem("ids", JSON.stringify(ids));
             // communicate w/ scrape.js that ids has been modified
-            chrome.runtime.sendMessage({greeting: "ids_updated", new_ids: ids});
+            updateAllData(ids);
         } else if (request.action === "add_productivity") {
             // update productivity per individual song with value from popup.js
             ids[request.idNumber]["productivity"] = parseInt(request.productivity);
             window.sessionStorage.setItem("ids", JSON.stringify(ids));
             // communicate w/ scrape.js that ids has been modified
-            chrome.runtime.sendMessage({greeting: "ids_updated", new_ids: ids});
+            updateAllData(ids);
         }
         return true;
     }
@@ -123,6 +123,7 @@ function start() {
     onPlayerStateChange({data: 1});
     // update the start time for the first song
     ids[idNumber]["start_time"] = startTime;
+    updateAllData(ids);
     window.sessionStorage.setItem("ids", JSON.stringify(ids));
 }
 
@@ -144,6 +145,7 @@ function autoNextIfEnded() {
 
         // add end time
         ids[idNumber]["end_time"] = new Date().getTime();
+        updateAllData(ids);
 
         // get new correct video id
         if (idNumber < ids.length-1) idNumber++;
@@ -205,6 +207,7 @@ function next() {
 
     // add start time
     ids[idNumber]["start_time"] = new Date().getTime();
+    updateAllData(ids);
 
     // post new values to session storage
     window.sessionStorage.setItem("id#", idNumber);
@@ -232,6 +235,7 @@ function back() {
 
     // if user immediately goes back to previous video, assume skipping was a mistake, and correct the skipped value
     if (player.getCurrentTime() < 5 && ids[idNumber-1]["skipped"]) ids[idNumber-1]["skipped"] = false;
+    updateAllData(ids);
 
     // get new correct video id (from scrape.js)
     if (idNumber >= 1) idNumber--;
@@ -256,5 +260,33 @@ function back() {
 }
 
 
-// FIXME when session closed, post session data to csv file 
-chrome.runtime.onSuspend.addListener() // FIXME check to make sure this completes asynchronously before session ends
+function updateAllData(ids) {
+
+    // first, send message to scrape.js that ids variable has been updated
+    chrome.runtime.sendMessage({action: "ids_updated", new_ids: ids});
+
+    // next, update the csv file with new data
+    var rows = [];
+    for (var num in ids) {
+        idInfo = ids[num];
+        rows.push( [Object.values(idInfo)] );
+    }
+
+    let csvContent = "data:text/csv;charset=utf-8,\r\ntitle, id, artist, genre, length, confidence, user_review, productivity, start_time, end_time, skipped";
+    rows.forEach(function(rowArray) {
+        let row = rowArray.join(",");
+        csvContent += row + "\r\n";
+    });
+
+    console.log(csvContent);
+
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "data_5152022.csv");
+    document.body.appendChild(link); // Required for FF
+    link.click(); // This will download the data file
+    document.body.removeChild(link);
+    console.log("downloaded");
+
+}
